@@ -6,7 +6,7 @@ M.general = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
   },
   v = {
-    [">"] = { ">gv", "indent"},
+    [">"] = { ">gv", "indent" },
   },
 }
 
@@ -55,11 +55,18 @@ M.harpoon = {
   },
 }
 
-
 -- project Manager
 M.projects = {
   n = {
-    ["<leader>fp"] = { "<cmd> ProjectMgr<CR>", "Open Projects"}
-    },
+    ["<leader>fp"] = { "<cmd> ProjectMgr<CR>", "Open Projects" },
+  },
+}
+
+-- binding for Markdown Preview
+M.mdpreview = {
+  n = {
+    ["<leader>mp"] = { "<cmd> MarkdownPreview<CR>", "Open Preview" },
+    ["<leader>mc"] = { "<cmd> MarkdownPreviewStop<CR>", "Close Preview" },
+  },
 }
 return M
