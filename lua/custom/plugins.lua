@@ -132,6 +132,9 @@ local plugins = {
     },
   },
 
+  {
+    "mfussenegger/nvim-dap",
+  },
   -- -- nvim dap for debugging
   {
     "dreamsofcode-io/nvim-dap-go",

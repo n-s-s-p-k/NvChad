@@ -69,4 +69,18 @@ M.mdpreview = {
     ["<leader>mc"] = { "<cmd> MarkdownPreviewStop<CR>", "Close Preview" },
   },
 }
+
+-- nvimdap
+M.nvimdap = {
+  n = {
+    ["<leader>db"] = { ":lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint" },
+    ["<leader>dc"] = { ":lua require'dap'.continue()<CR>", "Continue" },
+    ["<leader>di"] = { ":lua require'dap'.step_into()<CR>", "Step Into" },
+    ["<leader>do"] = { ":lua require'dap'.step_over()<CR>", "Step Over" },
+    ["<leader>dO"] = { ":lua require'dap'.step_out()<CR>", "Step Out" },
+    ["<leader>dr"] = { ":lua require'dap'.repl.open()<CR>", "Open REPL" },
+    ["<leader>dl"] = { ":lua require'dap'.run_last()<CR>", "Run Last" },
+  },
+}
+
 return M

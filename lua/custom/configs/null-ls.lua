@@ -8,7 +8,7 @@ local sources = {
 
   -- webdev stuff
   -- b.formatting.deno_fmt, -- choosed deno for ts/js files cuz its very fast!
-  b.formatting.prettier.with { filetypes = { "html", "markdown", "css", "json" } }, -- so prettier works only on these filetypes
+  b.formatting.prettier.with { filetypes = { "html", "markdown", "css", "typescript", "json" } }, -- so prettier works only on these filetypes
 
   -- Lua
   b.formatting.stylua,
@@ -19,7 +19,8 @@ local sources = {
   -- golang
   b.formatting.gofumpt,
   b.formatting.goimports_reviser,
-  b.formatting.golines,
+  -- foramtting long lines in go
+  -- b.formatting.golines,
 
   -- Shell
   b.formatting.shfmt,
