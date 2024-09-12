@@ -28,6 +28,9 @@ local sources = {
 
   -- terraform
   b.formatting.terraform_fmt,
+
+  -- ruby
+  b.formatting.rubocop.with { diagnostics_format = "#{m} [#{c}]" },
 }
 
 null_ls.setup {

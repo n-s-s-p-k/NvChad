@@ -103,25 +103,37 @@ local plugins = {
     end,
   },
 
-  -- codeium the AI
+  -- -- codeium the AI
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   config = function(_, opts)
+  --     table.insert(opts.sources, { name = "codeium" })
+  --     require("cmp").setup(opts)
+  --   end,
+  --   dependencies = {
+  --     {
+  --       "jcdickinson/codeium.nvim",
+  --       config = function()
+  --         require("codeium").setup {}
+  --       end,
+  --     },
+  --   },
+  -- },
+
+  -- github copilot
   {
-    "hrsh7th/nvim-cmp",
-    config = function(_, opts)
-      table.insert(opts.sources, { name = "codeium" })
-      require("cmp").setup(opts)
+    "github/copilot.vim",
+    lazy = false,
+    config = function() -- Mapping tab is already used by NvChad
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_tab_fallback = ""
+      -- The mapping is set to other key, see custom/lua/mappings
+      -- or run <leader>ch to see copilot mapping section
     end,
-    dependencies = {
-      {
-        "jcdickinson/codeium.nvim",
-        config = function()
-          require("codeium").setup {}
-        end,
-      },
-    },
   },
 
   -- diff view and much more in git
-
   {
     "lewis6991/gitsigns.nvim",
     dependencies = {
@@ -132,17 +144,71 @@ local plugins = {
     },
   },
 
+  -- {
+  --   "mfussenegger/nvim-dap",
+  -- },
+  --
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      "suketa/nvim-dap-ruby",
+    },
+    config = function()
+      require("dap-ruby").setup()
+    end,
   },
-  -- -- nvim dap for debugging
+  {
+    "nvim-neotest/nvim-nio",
+  },
+  -- nvim dap for debugging
   {
     "dreamsofcode-io/nvim-dap-go",
     ft = "go",
-    dependencies = "mfussenegger/nvim-dap",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap",
+    },
     config = function(_, opts)
       require("dap-go").setup(opts)
       require("core.utils").load_mappings "dap_go"
+    end,
+  },
+
+  -- {
+  --   "leoluz/nvim-dap-go",
+  --   ft = "go",
+  --   dependencies = {
+  --     "rcarriga/nvim-dap-ui",
+  --     -- "mfussenegger/nvim-dap",
+  --   },
+  -- },
+
+  -- dap ui
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    config = function()
+      local dap = require "dap"
+      local dapui = require "dapui"
+      dapui.setup()
+      -- Note: Added this <leader>dd duplicate of <F5> because somehow the <F5>
+      -- mapping keeps getting reset each time I restart nvim-dap. Annoying but whatever.
+      --
+      -- vim.keymap.set("n", "<leader>dd", function()
+      --   require("dapui").open() -- Requires nvim-dap-ui
+      --
+      --   vim.cmd [[DapContinue]] -- Important: This will lazy-load nvim-dap
+      -- end)
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
     end,
   },
 
