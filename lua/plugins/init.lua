@@ -129,6 +129,19 @@ return {
     opts = {},
   },
 
+  -- testing using the neotest for neovim
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require "lua.configs.neotest_config"
+    end,
+  },
   --
   --   -- override plugin configs
   -- {
