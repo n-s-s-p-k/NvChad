@@ -11,7 +11,7 @@ local function map(mode, lhs, rhs, opts)
 end
 
 -- General mappings
-map("n", ";", ":", { desc = "Enter command mode" })
+map("n", ";", ":", { nowait = true, desc = "Enter command mode" })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 
 -- Buffer operations
@@ -80,6 +80,33 @@ local hop = require "hop"
 map({ "n", "x", "o", "v" }, "<leader>fj", function()
   hop.hint_words()
 end, { desc = "Hop: Hint words" })
+
+-- Neotest mappings
+local neotest = require "neotest"
+map("n", ";tt", function()
+  neotest.run.run(vim.fn.expand "%")
+end, { desc = "Neotest: Run File" })
+map("n", ";tr", function()
+  neotest.run.run()
+end, { desc = "Neotest: Run Nearest" })
+map("n", ";tT", function()
+  neotest.run.run(vim.loop.cwd())
+end, { desc = "Neotest: Run All Test Files" })
+map("n", ";tl", function()
+  neotest.run.run_last()
+end, { desc = "Neotest: Run Last" })
+map("n", ";ts", function()
+  neotest.summary.toggle()
+end, { desc = "Neotest: Toggle Summary" })
+map("n", ";to", function()
+  neotest.output.open { enter = true, auto_close = true }
+end, { desc = "Neotest: Show Output" })
+map("n", ";tO", function()
+  neotest.output_panel.toggle()
+end, { desc = "Neotest: Toggle Output Panel" })
+map("n", ";tS", function()
+  neotest.run.stop()
+end, { desc = "Neotest: Stop" })
 
 -- Markdown Preview mappings
 map("n", "<leader>mp", "<Plug>MarkdownPreview", { silent = true, noremap = true, desc = "Markdown: Start preview" })
