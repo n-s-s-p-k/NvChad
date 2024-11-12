@@ -6,12 +6,18 @@
 local M = {}
 
 M.base46 = {
-  theme = "catppuccin",
+  theme = "everforest",
 
-  -- hl_override = {
-  -- 	Comment = { italic = true },
-  -- 	["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    Comment = { italic = true },
+    ["@comment"] = { italic = true },
+  },
 }
 
+M.ui = {
+  statusline = {
+    theme = "default",
+    separator_style = "default",
+  },
+}
 return M

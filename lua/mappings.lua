@@ -10,6 +10,9 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
+-- paste without forgetting
+map("v", "p", "pgvy")
+
 -- General mappings
 map("n", ";", ":", { nowait = true, desc = "Enter command mode" })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
@@ -120,9 +123,9 @@ vim.g.mkdp_refresh_slow = 0
 vim.g.mkdp_command_for_global = 0
 vim.g.mkdp_open_to_the_world = 0
 vim.g.mkdp_open_ip = ""
-vim.g.mkdp_browser = "google" -- Use Safari as the default browser on macOS
+vim.g.mkdp_browser = "" -- Use Safari as the default browser on macOS
 vim.g.mkdp_echo_preview_url = 1 -- Echo preview page URL in command line
-vim.g.mkdp_browserfunc = "google"
+vim.g.mkdp_browserfunc = ""
 vim.g.mkdp_preview_options = {
   mkit = {},
   katex = {},

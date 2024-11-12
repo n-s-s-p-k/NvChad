@@ -24,6 +24,10 @@ return {
         "html",
         "css",
         "javascript",
+        "scss",
+        "json5",
+        "typescript",
+        "tsx",
         -- script
         "python",
         "cpp",
@@ -59,15 +63,37 @@ return {
     end,
   },
 
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
   -- markdown preview
   {
     "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && yarn install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
+    run = function()
+      vim.fn["mkdp#util#install"]()
     end,
-    ft = { "markdown" },
+    setup = function()
+      local g = vim.g
+      g.mkdp_auto_start = 1
+      g.mkdp_auto_close = 1
+      g.mkdp_page_title = "${name}.md"
+      g.mkdp_preview_options = {
+        disable_sync_scroll = 0,
+        disable_filename = 1,
+      }
+    end,
+    ft = "markdown",
   },
 
   -- hop for better navigations
@@ -84,6 +110,7 @@ return {
   {
     "TimUntersberger/neogit",
     cmd = "Neogit",
+    lazy = true,
     config = function()
       require("neogit").setup {}
     end,
@@ -139,7 +166,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-      require "lua.configs.neotest_config"
+      require "configs.neotest_config"
     end,
   },
   --
