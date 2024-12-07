@@ -5,10 +5,11 @@ local options = {
     html = { "prettierd" },
     javascript = { "prettierd" },
     javascriptreact = { "prettierd" },
-    python = {"isort", "black"},
-    cpp = {"clang-format"},
-    go = {"gofumpt", "goimports-reviser"},
-    ruby = {"rubocop"}
+    python = { "isort", "black" },
+    cpp = { "clang-format" },
+    go = { "gofumpt", "goimports-reviser" },
+    ruby = { "rubocop" },
+    elixir = { "mix format" },
   },
 
   format_on_save = {

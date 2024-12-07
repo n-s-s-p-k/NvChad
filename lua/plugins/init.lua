@@ -40,6 +40,8 @@ return {
         "puppet",
         "markdown",
         "terraform",
+        "elixir",
+        "eex",
       },
     },
   },
