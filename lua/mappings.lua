@@ -123,7 +123,7 @@ vim.g.mkdp_refresh_slow = 0
 vim.g.mkdp_command_for_global = 0
 vim.g.mkdp_open_to_the_world = 0
 vim.g.mkdp_open_ip = ""
-vim.g.mkdp_browser = "" -- Use Safari as the default browser on macOS
+-- vim.g.mkdp_browser = "" -- Use Safari as the default browser on macOS
 vim.g.mkdp_echo_preview_url = 1 -- Echo preview page URL in command line
 vim.g.mkdp_browserfunc = ""
 vim.g.mkdp_preview_options = {
@@ -155,3 +155,58 @@ function! OpenMarkdownPreview(url)
     execute "silent ! open " . a:url
 endfunction
 ]]
+
+-- Setup for the gitsigns plugin
+local gitsigns = require "gitsigns"
+map("n", "]c", function()
+  if vim.wo.diff then
+    vim.cmd.normal { "]c", bang = true }
+  else
+    gitsigns.nav_hunk "next"
+  end
+end)
+
+map("n", "[c", function()
+  if vim.wo.diff then
+    vim.cmd.normal { "[c", bang = true }
+  else
+    gitsigns.nav_hunk "prev"
+  end
+end)
+map("n", "<M-g>s", gitsigns.stage_hunk, { desc = "gitsigns: stage hunk" })
+map("n", "<M-g>r", gitsigns.reset_hunk, { desc = "gitsigns: Reset hunk" })
+
+map("v", "<M-g>s", function()
+  gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
+end, { desc = "gitsigns: stage selected hunk" })
+
+map("v", "<M-g>r", function()
+  gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
+end, { desc = "gitsigns: Reset selected hunk" })
+
+map("n", "<M-g>S", gitsigns.stage_buffer, { desc = "gitsigns: Stage buffer" })
+map("n", "<M-g>R", gitsigns.reset_buffer, { desc = "gitsigns: Reset buffer" })
+map("n", "<M-g>p", gitsigns.preview_hunk, { desc = "gitsigns: Preview hunk" })
+map("n", "<M-g>i", gitsigns.preview_hunk_inline, { desc = "gitsigns: Preview hunk inline" })
+
+map("n", "<M-g>b", function()
+  gitsigns.blame_line { full = true }
+end, { desc = "gitsigns: Blame line" })
+
+map("n", "<M-g>d", gitsigns.diffthis, { desc = "gitsigns: Diff" })
+
+map("n", "<M-g>D", function()
+  gitsigns.diffthis "~"
+end, { desc = "gitsigns: Diff selected" })
+
+map("n", "<M-g>Q", function()
+  gitsigns.setqflist "all"
+end, { desc = "gitsigns: Set quickfix list" })
+map("n", "<M-g>q", gitsigns.setqflist, { desc = "gitsigns: Set quickfix list" })
+
+-- Toggles
+map("n", "<M-g>tb", gitsigns.toggle_current_line_blame, { desc = "gitsigns: Toggle line blame" })
+map("n", "<M-g>tw", gitsigns.toggle_word_diff, { desc = "gitsigns: Toggle word diff" })
+
+-- Text object
+map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "gitsigns: Select hunk" })

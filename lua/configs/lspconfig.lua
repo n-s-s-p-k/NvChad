@@ -1,8 +1,9 @@
 -- load defaults i.e lua_lsp
-require("nvchad.configs.lspconfig").defaults()
+local nvlsp = require "nvchad.configs.lspconfig"
 
 local lspconfig = require "lspconfig"
 
+nvlsp.defaults()
 -- EXAMPLE
 local servers = {
   "html",
@@ -17,8 +18,8 @@ local servers = {
   "solargraph",
   -- "elixirls",
   "lexical",
+  "jdtls",
 }
-local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -43,3 +44,10 @@ end
 --   on_init = nvlsp.on_init,
 --   capabilities = nvlsp.capabilities,
 -- }
+
+lspconfig.lexical.setup {
+  cmd = { "/Users/pniladhuri/.local/share/nvim/mason/packages/lexical/libexec/lexical/bin/start_lexical.sh" },
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+}
