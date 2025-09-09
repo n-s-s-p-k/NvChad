@@ -2,7 +2,7 @@
 
 return {
   ensure_installed = {
--- lua stuff
+    -- lua stuff
     "lua-language-server",
     "stylua",
 
@@ -31,5 +31,8 @@ return {
     "revive",
     "golines",
     "goimports-reviser",
-  }
+
+    -- elixir
+    "lexical",
+  },
 }

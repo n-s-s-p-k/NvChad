@@ -10,8 +10,11 @@ local function map(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, options)
 end
 
+-- paste without forgetting
+map("v", "p", "pgvy")
+
 -- General mappings
-map("n", ";", ":", { desc = "Enter command mode" })
+map("n", ";", ":", { nowait = true, desc = "Enter command mode" })
 map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
 
 -- Buffer operations
@@ -81,6 +84,33 @@ map({ "n", "x", "o", "v" }, "<leader>fj", function()
   hop.hint_words()
 end, { desc = "Hop: Hint words" })
 
+-- Neotest mappings
+local neotest = require "neotest"
+map("n", ";tt", function()
+  neotest.run.run(vim.fn.expand "%")
+end, { desc = "Neotest: Run File" })
+map("n", ";tr", function()
+  neotest.run.run()
+end, { desc = "Neotest: Run Nearest" })
+map("n", ";tT", function()
+  neotest.run.run(vim.loop.cwd())
+end, { desc = "Neotest: Run All Test Files" })
+map("n", ";tl", function()
+  neotest.run.run_last()
+end, { desc = "Neotest: Run Last" })
+map("n", ";ts", function()
+  neotest.summary.toggle()
+end, { desc = "Neotest: Toggle Summary" })
+map("n", ";to", function()
+  neotest.output.open { enter = true, auto_close = true }
+end, { desc = "Neotest: Show Output" })
+map("n", ";tO", function()
+  neotest.output_panel.toggle()
+end, { desc = "Neotest: Toggle Output Panel" })
+map("n", ";tS", function()
+  neotest.run.stop()
+end, { desc = "Neotest: Stop" })
+
 -- Markdown Preview mappings
 map("n", "<leader>mp", "<Plug>MarkdownPreview", { silent = true, noremap = true, desc = "Markdown: Start preview" })
 map("n", "<leader>ms", "<Plug>MarkdownPreviewStop", { desc = "Markdown: Stop preview" })
@@ -93,9 +123,9 @@ vim.g.mkdp_refresh_slow = 0
 vim.g.mkdp_command_for_global = 0
 vim.g.mkdp_open_to_the_world = 0
 vim.g.mkdp_open_ip = ""
-vim.g.mkdp_browser = "google" -- Use Safari as the default browser on macOS
+-- vim.g.mkdp_browser = "" -- Use Safari as the default browser on macOS
 vim.g.mkdp_echo_preview_url = 1 -- Echo preview page URL in command line
-vim.g.mkdp_browserfunc = "google"
+vim.g.mkdp_browserfunc = ""
 vim.g.mkdp_preview_options = {
   mkit = {},
   katex = {},
@@ -125,3 +155,58 @@ function! OpenMarkdownPreview(url)
     execute "silent ! open " . a:url
 endfunction
 ]]
+
+-- Setup for the gitsigns plugin
+local gitsigns = require "gitsigns"
+map("n", "]c", function()
+  if vim.wo.diff then
+    vim.cmd.normal { "]c", bang = true }
+  else
+    gitsigns.nav_hunk "next"
+  end
+end)
+
+map("n", "[c", function()
+  if vim.wo.diff then
+    vim.cmd.normal { "[c", bang = true }
+  else
+    gitsigns.nav_hunk "prev"
+  end
+end)
+map("n", "<M-g>s", gitsigns.stage_hunk, { desc = "gitsigns: stage hunk" })
+map("n", "<M-g>r", gitsigns.reset_hunk, { desc = "gitsigns: Reset hunk" })
+
+map("v", "<M-g>s", function()
+  gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
+end, { desc = "gitsigns: stage selected hunk" })
+
+map("v", "<M-g>r", function()
+  gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
+end, { desc = "gitsigns: Reset selected hunk" })
+
+map("n", "<M-g>S", gitsigns.stage_buffer, { desc = "gitsigns: Stage buffer" })
+map("n", "<M-g>R", gitsigns.reset_buffer, { desc = "gitsigns: Reset buffer" })
+map("n", "<M-g>p", gitsigns.preview_hunk, { desc = "gitsigns: Preview hunk" })
+map("n", "<M-g>i", gitsigns.preview_hunk_inline, { desc = "gitsigns: Preview hunk inline" })
+
+map("n", "<M-g>b", function()
+  gitsigns.blame_line { full = true }
+end, { desc = "gitsigns: Blame line" })
+
+map("n", "<M-g>d", gitsigns.diffthis, { desc = "gitsigns: Diff" })
+
+map("n", "<M-g>D", function()
+  gitsigns.diffthis "~"
+end, { desc = "gitsigns: Diff selected" })
+
+map("n", "<M-g>Q", function()
+  gitsigns.setqflist "all"
+end, { desc = "gitsigns: Set quickfix list" })
+map("n", "<M-g>q", gitsigns.setqflist, { desc = "gitsigns: Set quickfix list" })
+
+-- Toggles
+map("n", "<M-g>tb", gitsigns.toggle_current_line_blame, { desc = "gitsigns: Toggle line blame" })
+map("n", "<M-g>tw", gitsigns.toggle_word_diff, { desc = "gitsigns: Toggle word diff" })
+
+-- Text object
+map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "gitsigns: Select hunk" })
